@@ -1,14 +1,12 @@
 package com.thiago.models.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "person")
 @Data
+@With
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
