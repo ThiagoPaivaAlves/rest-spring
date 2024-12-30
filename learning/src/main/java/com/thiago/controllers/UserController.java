@@ -1,7 +1,7 @@
 package com.thiago.controllers;
 
-import com.thiago.models.PersonDto;
-import com.thiago.services.PersonService;
+import com.thiago.models.UserDto;
+import com.thiago.services.SystemUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,78 +17,77 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
-@Tag(name = "People", description = "Endpoint for managing people")
-public class PersonController {
+@RequestMapping("/api/users")
+@Tag(name = "User Controller", description = "Endpoint for managing System users")
+public class UserController {
     
     @Autowired
-    PersonService service;
+    private SystemUserService service;
     
     @GetMapping("/{id}")
-    @Operation(description = "Finds a Person registered in database by its id",
-            summary = "Finds a Person registered in database by its id", responses = {
+    @Operation(description = "Finds a user registered in database by its id",
+            summary = "Finds a user registered in database by its id", responses = {
             @ApiResponse(description = "SUCCESS", responseCode = "200",
-                    content = {@Content(schema = @Schema(implementation = PersonDto.class))}),
+                    content = {@Content(schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
-    public PersonDto findPerson(@PathVariable("id") Long id) {
+    public UserDto findUser(@PathVariable("id") Long id) {
         return service.findById(id);
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(description = "Finds all Person registered in database",
-            summary = "Finds all Person registered in database", responses = {
+    @Operation(description = "Finds all users registered in database",
+            summary = "Finds all users registered in database", responses = {
             @ApiResponse(description = "SUCCESS", responseCode = "200", content = {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = PersonDto.class)))}),
+                            array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))}),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
-    public List<PersonDto> findAllPerson() {
+    public List<UserDto> findAllUsers() {
         return service.findAll();
     }
     
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(description = "Inserts a Person object in the database",
-            summary = "Inserts a Person object in the database", responses = {
+    @Operation(description = "Inserts a User object in the database",
+            summary = "Inserts a User object in the database", responses = {
             @ApiResponse(description = "SUCCESS", responseCode = "200",
-                    content = {@Content(schema = @Schema(implementation = PersonDto.class))}),
+                    content = {@Content(schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
-    public PersonDto createPerson(@RequestBody @Valid PersonDto personDto) {
-        return service.create(personDto);
+    public UserDto createUser(@RequestBody @Valid UserDto userDto) {
+        return service.create(userDto);
     }
     
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(description = "Updates a Person object in the database",
-            summary = "Updates a Person object in the database", responses = {
+    @Operation(description = "Updates a User object in the database",
+            summary = "Updates a User object in the database", responses = {
             @ApiResponse(description = "SUCCESS", responseCode = "200",
-                    content = {@Content(schema = @Schema(implementation = PersonDto.class))}),
+                    content = {@Content(schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
-    public PersonDto updatePerson(@PathVariable Long id, @RequestBody PersonDto personDto) {
-        return service.update(id, personDto);
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return service.update(id, userDto);
     }
     
     @DeleteMapping("/{id}")
-    @Operation(description = "Deletes a Person from database", summary = "Deletes a Person from database",
+    @Operation(description = "Deletes a User from database", summary = "Deletes a User from database",
             responses = {
-            @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
-            @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-            @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
-            @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-            @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
-    public ResponseEntity<?> deletePerson(@PathVariable("id") Long id) {
+                    @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)})
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
 }

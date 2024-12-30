@@ -1,3 +1,10 @@
+security:
+  jwt:
+    token:
+      secret-key: 53cr7
+      expire-length: 3600000 #in milliseconds
+      refresh-length: 3 #in hours
+
 server:
   port: 8888
 spring:
