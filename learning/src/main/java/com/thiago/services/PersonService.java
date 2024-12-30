@@ -51,7 +51,7 @@ public class PersonService {
         }
 
         PersonDto dto = Mapper.personMapper(repository.save(Mapper.personDtoMapper(personDto)));
-        dto.add(linkTo(methodOn(PersonController.class).findPerson(dto.getKey())).withSelfRel());
+        dto.add(linkTo(methodOn(PersonController.class).createPerson(personDto)).withSelfRel());
         return dto;
     }
 
@@ -68,7 +68,7 @@ public class PersonService {
         Person entity = Mapper.personDtoMapper(personDto);
         entity.setId(id);
         PersonDto dto = Mapper.personMapper(repository.save(entity));
-        dto.add(linkTo(methodOn(PersonController.class).findPerson(dto.getKey())).withSelfRel());
+        dto.add(linkTo(methodOn(PersonController.class).updatePerson(id, personDto)).withSelfRel());
         return dto;
     }
 
