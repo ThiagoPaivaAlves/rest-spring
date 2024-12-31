@@ -15,13 +15,14 @@ public class Mapper {
                 .lastName(person.getLastName())
                 .address(person.getAddress())
                 .gender(person.getGender())
+                .enabled(person.getEnabled())
                 .build();
 
     }
 
     public static Person personDtoMapper(PersonDto personDto) {
         return new Person(personDto.getKey(), personDto.getFirstName(), personDto.getLastName(), personDto.getAddress(),
-                personDto.getGender());
+                personDto.getGender(), personDto.getEnabled());
     }
     
     public static BookDto bookMapper(Book book) {

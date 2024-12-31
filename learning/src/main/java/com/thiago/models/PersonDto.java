@@ -19,4 +19,5 @@ public class PersonDto extends RepresentationModel<PersonDto> {
     private String lastName;
     private String address;
     private String gender;
+    private Boolean enabled;
 }

@@ -27,4 +27,7 @@ public class Person {
 
     @Column(name="gender")
     private String gender;
+    
+    @Column(name="enabled", nullable = false)
+    private Boolean enabled;
 }

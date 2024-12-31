@@ -9,9 +9,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -23,6 +25,9 @@ public class BookService {
     @Autowired
     private BookRepository repository;
     
+    @Autowired
+    PagedResourcesAssembler<BookDto> assembler;
+    
     public BookDto findById(Long id) {
         
         log.info("Finding a specific book");
@@ -33,15 +38,16 @@ public class BookService {
         return response;
     }
     
-    public List<BookDto> findAllBooks() {
+    public PagedModel<EntityModel<BookDto>> findAllBooks(Pageable pageable) {
         
         log.info("Finding all books");
         
-        return repository.findAll().stream().map(book -> {
+        return assembler.toModel(repository.findAll(pageable).map(book -> {
             BookDto dto = Mapper.bookMapper(book);
-            dto.add(linkTo(methodOn(BookController.class).findAllBooks()).withSelfRel());
+            dto.add(linkTo(methodOn(BookController.class).findBookById(dto.getKey())).withSelfRel());
             return dto;
-        }).toList();
+        }), linkTo(methodOn(BookController.class).findAllBooks(pageable.getPageNumber(), pageable.getPageSize(),
+                                                                  "ASC")).withSelfRel());
     }
     
     @SneakyThrows
