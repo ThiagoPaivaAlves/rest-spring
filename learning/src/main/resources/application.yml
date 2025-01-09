@@ -1,23 +1,36 @@
-#Authentication Config Stuff
+#Authentication Config Stuff (this is all custom)
 security:
   jwt:
     token:
       secret-key: 53cr7
       expire-length: 3600000
+      refresh-length: 4
 
 #General Configuration
 spring:
   application:
     name: rest-spring
+#Databse configuration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/rest_spring_udemy?useTimezone=true&serverTimezone=UTC
     username: root
     password: ""
+#ORM configuration
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: none
     show-sql: false
+#File upload configuration
+  file:
+    upload-dir: learning/src/main/resources/uploads
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request_size: 215MB
+#Flyway configuration
   flyway:
     enabled: true
